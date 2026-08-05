@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tafsiri App</title>
+<style>
+body{font-family:Arial;background:#e8f5e9;display:flex;justify-content:center;padding:20px}
+.app{background:#fff;padding:25px;border-radius:20px;max-width:420px;width:100%;box-shadow:0 5px 15px rgba(0,0,0,0.1)}
+h1{color:#2e7d32;text-align:center;margin:0}
+.tabs{display:flex;gap:10px;margin:20px 0}
+.tab-btn{flex:1;padding:12px;border:2px solid #2e7d32;border-radius:10px;background:#fff;color:#2e7d32;font-weight:bold;cursor:pointer}
+.tab-btn.active{background:#2e7d32;color:#fff}
+textarea{width:100%;height:90px;padding:10px;border:1px solid #ccc;border-radius:10px;box-sizing:border-box;font-size:16px}
+.btn{background:#1976d2;color:#fff;border:none;padding:14px;border-radius:10px;width:100%;font-size:16px;font-weight:bold;margin-top:10px;cursor:pointer}
+.output{background:#e8f5e9;padding:15px;border-radius:10px;margin-top:20px}
+.btn-small{background:#2e7d32;color:#fff;border:none;padding:10px 15px;border-radius:8px;margin:5px;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="app">
+<h1>🌍 Tafsiri App</h1>
+<p style="text-align:center">English ↔ Kiswahili Translator</p>
+
+<div class="tabs">
+<button id="en" class="tab-btn active" onclick="setLang('en-sw')">English to Swahili</button>
+<button id="sw" class="tab-btn" onclick="setLang('sw-en')">Swahili to English</button>
+</div>
+
+<textarea id="inputText" placeholder="Type in English..."></textarea>
+<button class="btn" onclick="translate()">Translate / Tafsiri</button>
+
+<div class="output">
+<h3>Translation:</h3>
+<p id="outputText" style="font-size:20px;font-weight:bold;color:#2e7d32;min-height:25px"></p>
+<button class="btn-small" onclick="copyText()">📋 Copy</button>
+<button class="btn-small" onclick="speakText()">🔊 Speak</button>
+</div>
+</div>
+
+<script>
+let currentLang = 'en-sw';
+const dictionary = {
+'en-sw':{'hello':'jambo','thank you':'asante','goodbye':'kwaheri','yes':'ndio','no':'hapana','water':'maji','food':'chakula','school':'shule','friend':'rafiki'},
+'sw-en':{'jambo':'hello','asante':'thank you','kwaheri':'goodbye','ndio':'yes','hapana':'no','maji':'water','chakula':'food','shule':'school','rafiki':'friend'}
+};
+
+function setLang(lang){
+currentLang = lang;
+document.getElementById('en').classList.remove('active');
+document.getElementById('sw').classList.remove('active');
+document.getElementById(lang==='en-sw'?'en':'sw').classList.add('active');
+document.getElementById('inputText').placeholder = lang === 'en-sw'? 'Type in English...' : 'Andika kwa Kiswahili...';
+document.getElementById('outputText').innerText = '';
+}
+
+function translate(){
+let text = document.getElementById('inputText').value.toLowerCase().trim();
+let result = dictionary[currentLang][text];
+if(!result){ result = "Neno halipatikani / Word not found. Try: hello, asante"; }
+document.getElementById('outputText').innerText = result;
+if(!result.includes('not found')) setTimeout(()=>speakText(result), 300);
+}
+
+function copyText(){
+navigator.clipboard.writeText(document.getElementById('outputText').innerText);
+alert('Copied!');
+}
+
+function speakText(text = null){
+let speakThis = text || document.getElementById('outputText').innerText;
+if(!speakThis || speakThis.includes('not found')) return;
+let speech = new SpeechSynthesisUtterance(speakThis);
+speech.lang = currentLang === 'en-sw'? 'sw-KE' : 'en-US';
+speech.rate = 0.9;
+window.speechSynthesis.speak(speech);
+}
+</script>
+</body>
+</html>
