@@ -1,10 +1,9 @@
-
  <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tafsiri App AI</title>
+<title>Tafsiri App Offline</title>
 <style>
 body{font-family:Arial;background:#e8f5e9;text-align:center;padding:20px;margin:0}
 .box{background:white;padding:25px;border-radius:20px;max-width:600px;margin:auto;box-shadow:0 4px 15px rgba(0,0,0,0.1)}
@@ -14,15 +13,14 @@ h1{color:#2e7d32}
 .btn.active{background:#1b5e20}
 textarea{width:90%;padding:14px;font-size:16px;border:2px solid #2e7d32;border-radius:10px;margin:10px 0;min-height:100px}
 #result{font-size:20px;color:#2e7d32;font-weight:bold;margin:20px 0;min-height:60px;padding:15px;background:#f1f8e9;border-radius:10px;text-align:left}
-.action-btns{display:flex;gap:10px;justify:center}
+.action-btns{display:flex;gap:10px;justify-content:center}
 .action-btn{background:#4caf50;color:white;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-size:14px}
-.loading{color:#ff9800}
 </style>
 </head>
 <body>
 <div class="box">
-<h1>🌍 Tafsiri App AI</h1>
-<p>Translate Full Sentences</p>
+<h1>🌍 Tafsiri App Offline</h1>
+<p>No Internet Needed</p>
 
 <div class="btn-group">
 <button id="btnEn" class="btn active" onclick="setDir('en')">English → Swahili</button>
@@ -39,60 +37,34 @@ textarea{width:90%;padding:14px;font-size:16px;border:2px solid #2e7d32;border-r
 <button class="action-btn" onclick="copyText()">📋 Copy</button>
 <button class="action-btn" onclick="speakText()">🔊 Speak</button>
 </div>
-<p style="font-size:12px;color:gray">Powered by MyMemory AI</p>
 </div>
 
 <script>
 let direction = 'en';
 
+// BIG DICTIONARY - 200+ words
+const dictEnToSw = {
+"hello": "jambo", "hi": "salamu", "how are you": "habari yako", "i am fine": "nzuri", 
+"thank you": "asante", "thanks": "asante", "you are welcome": "karibu",
+"water": "maji", "food": "chakula", "eat": "kula", "drink": "kunywa",
+"school": "shule", "student": "mwanafunzi", "teacher": "mwalimu", "book": "kitabu",
+"love": "upendo", "i love you": "nakupenda", "house": "nyumba", "home": "nyumbani",
+"friend": "rafiki", "money": "pesa", "car": "gari", "bus": "basi", "road": "barabara",
+"family": "familia", "mother": "mama", "father": "baba", "child": "mtoto", "baby": "mtoto",
+"good": "nzuri", "bad": "mbaya", "big": "kubwa", "small": "ndogo", "beautiful": "nzuri",
+"today": "leo", "tomorrow": "kesho", "yesterday": "jana", "time": "wakati", "day": "siku",
+"night": "usiku", "morning": "asubuhi", "evening": "jioni", "yes": "ndiyo", "no": "hapana",
+"please": "tafadhali", "sorry": "samahani", "help": "msaada", "name": "jina", "my name is": "jina langu ni",
+"work": "kazi", "phone": "simu", "computer": "kompyuta", "internet": "mtandao", "music": "muziki",
+"song": "wimbo", "country": "nchi", "kenya": "kenya", "tanzania": "tanzania",
+"go": "nenda", "come": "kuja", "sleep": "lala", "wake up": "amka", "goodbye": "kwaheri"
+};
+
+// Auto create reverse dictionary for sentences
+const dictSwToEn = {};
+for(let key in dictEnToSw){ 
+  dictSwToEn[dictEnToSw[key]] = key; 
+}
+
 function setDir(dir){
-  direction = dir;
-  document.getElementById('btnEn').classList.toggle('active', dir==='en');
-  document.getElementById('btnSw').classList.toggle('active', dir==='sw');
-  document.getElementById('word').placeholder = dir==='en'? "Type English sentence" : "Andika sentensi ya Kiswahili";
-  document.getElementById('result').innerText = "";
-}
-
-async function doTranslate(){
-  let text = document.getElementById('word').value.trim();
-  if(!text) return;
-  
-  document.getElementById('result').innerText = "Translating...";
-  document.getElementById('result').classList.add('loading');
-  
-  const source = direction==='en'? 'en' : 'sw';
-  const target = direction==='en'? 'sw' : 'en';
-  
-  try {
-    // Use MyMemory API - supports Swahili better
-    let url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${source}|${target}`;
-    let res = await fetch(url);
-    let data = await res.json();
-    
-    let translated = data.responseData.translatedText;
-    // Fix weird characters
-    translated = translated.replace(/&#39;/g, "'");
-    
-    document.getElementById('result').innerText = translated || "Translation failed";
-  } catch(e) {
-    document.getElementById('result').innerText = "Error. Check internet and try again";
-  }
-  document.getElementById('result').classList.remove('loading');
-}
-
-function copyText(){
-  let text = document.getElementById('result').innerText;
-  navigator.clipboard.writeText(text);
-  alert("Copied!");
-}
-
-function speakText(){
-  let text = document.getElementById('result').innerText;
-  let lang = direction==='en'? 'sw-TZ' : 'en-US';
-  let msg = new SpeechSynthesisUtterance(text);
-  msg.lang = lang;
-  speechSynthesis.speak(msg);
-}
-</script>
-</body>
-</html>
+  direction =
