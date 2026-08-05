@@ -1,12 +1,49 @@
+
+ html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tafsiri App</title>
 <style>
-body{font-family:Arial;background:#e8f5e9;display:flex;justify-content:center;padding:20px}
-.app{background:#fff;padding:25px;border-radius:20px;max-width:420px;width:100%;box-shadow:0 5px 15px rgba(0,0,0,0.1)}
+body{font-family:Arial;background:#e8f5e9;text-align:center;padding:30px}
+.box{background:white;padding:20px;border-radius:15px;max-width:400px;margin:auto}
+button{background:#2e7d32;color:white;border:none;padding:15px 30px;border-radius:10px;font-size:18px;margin-top:10px}
+input{width:90%;padding:12px;font-size:16px;border:1px solid #ccc;border-radius:8px}
+h1{color:#2e7d32}
+#result{font-size:24px;color:#2e7d32;font-weight:bold;margin-top:20px;min-height:30px}
+</style>
+</head>
+<body>
+<div class="box">
+<h1>🌍 Tafsiri App</h1>
+<p>English to Kiswahili</p>
+<input id="word" placeholder="Type hello">
+<br>
+<button onclick="doTranslate()">Translate</button>
+<div id="result"></div>
+</div>
+
+<script>
+function doTranslate(){
+  const dict = {
+    "hello": "jambo",
+    "thank you": "asante", 
+    "water": "maji",
+    "food": "chakula",
+    "school": "shule"
+  };
+  let w = document.getElementById('word').value.toLowerCase().trim();
+  let answer = dict[w];
+  if(answer){
+    document.getElementById('result').innerText = answer;
+  } else {
+    document.getElementById('result').innerText = "Word not found. Try: hello";
+  }
+}
+</script>
+</body>
+</html>:#fff;padding:25px;border-radius:20px;max-width:420px;width:100%;box-shadow:0 5px 15px rgba(0,0,0,0.1)}
 h1{color:#2e7d32;text-align:center;margin:0}
 .tabs{display:flex;gap:10px;margin:20px 0}
 .tab-btn{flex:1;padding:12px;border:2px solid #2e7d32;border-radius:10px;background:#fff;color:#2e7d32;font-weight:bold;cursor:pointer}
