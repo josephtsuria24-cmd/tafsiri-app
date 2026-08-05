@@ -1,0 +1,10 @@
+{
+  "name": "Tafsiri App",
+  "short_name": "Tafsiri",
+  "description": "English Swahili Translator",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F0FDF4",
+  "theme_color": "#16A34A",
+  "icons": [{"src": "https://i.imgur.com/8Km9tLL.png","sizes": "512x512","type": "image/png"}]
+}
