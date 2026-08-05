@@ -4,6 +4,48 @@ const dictionary = {
   'en-sw': {
     'hello': 'jambo', 'goodbye': 'kwaheri', 'thank you': 'asante',
     'please': 'tafadhali', 'yes': 'ndio', 'no': 'hapana', 'how are you': 'habari yako',
+    'water': 'maji', 'food': 'chakula', 'school': 'shule'
+  },
+  'sw-en': {
+    'jambo': 'hello', 'kwaheri': 'goodbye', 'asante': 'thank you',
+    'tafadhali': 'please', 'ndio': 'yes', 'hapana': 'no', 'habari yako': 'how are you',
+    'maji': 'water', 'chakula': 'food', 'shule': 'school'
+  }
+};
+
+function setLang(lang){
+  currentLang = lang;
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('inputText').placeholder = lang === 'en-sw'? 'Type in English...' : 'Andika kwa Kiswahili...';
+  document.getElementById('outputText').innerText = '';
+}
+
+function translate(){
+  let text = document.getElementById('inputText').value.toLowerCase().trim();
+  let result = dictionary[currentLang][text] || "Neno halipatikani / Word not found";
+  document.getElementById('outputText').innerText = result;
+  setTimeout(() => { if(result!== "Neno halipatikani / Word not found") speakText(result); }, 500);
+}
+
+function copyText(){
+  navigator.clipboard.writeText(document.getElementById('outputText').innerText);
+  alert('Copied!');
+}
+
+function speakText(text = null){
+  let speakThis = text || document.getElementById('outputText').innerText;
+  if(!speakThis || speakThis.includes('not found')) return;
+  let speech = new SpeechSynthesisUtterance(speakThis);
+  speech.lang = currentLang === 'en-sw'? 'sw-KE' : 'en-US';
+  speech.rate = 0.9;
+  window.speechSynthesis.speak(speech);
+}let currentLang = 'en-sw';
+
+const dictionary = {
+  'en-sw': {
+    'hello': 'jambo', 'goodbye': 'kwaheri', 'thank you': 'asante',
+    'please': 'tafadhali', 'yes': 'ndio', 'no': 'hapana', 'how are you': 'habari yako',
     'i am fine': 'nzima', 'water': 'maji', 'food': 'chakula', 'school': 'shule',
     'teacher': 'mwalimu', 'student': 'mwanafunzi', 'book': 'kitabu', 'pen': 'kalamu',
     'house': 'nyumba', 'money': 'pesa', 'friend': 'rafiki', 'love': 'upendo',
