@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+   <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -42,63 +42,40 @@ textarea{width:90%;padding:14px;font-size:16px;border:2px solid #2e7d32;border-r
 <script>
 let direction = 'en';
 
-// BIG DICTIONARY
 const dictEnToSw = {
-"i":"mimi", "you":"wewe", "he":"yeye", "she":"yeye", "we":"sisi", "they":"wao",
-"love":"penda", "like":"penda", "am":"ni", "is":"ni", "are":"ni", "was":"kuwa",
-"the":"", "a":"", "an":"",
-"hello":"jambo", "hi":"salamu", "how":"vipi", "are":"uko", "you":"we", "today":"leo",
-"thank":"asante", "thanks":"asante", "water":"maji", "food":"chakula", "eat":"kula",
-"school":"shule", "book":"kitabu", "house":"nyumba", "home":"nyumbani", "friend":"rafiki",
-"money":"pesa", "car":"gari", "good":"nzuri", "bad":"mbaya", "big":"kubwa", "small":"ndogo",
-"yes":"ndiyo", "no":"hapana", "please":"tafadhali", "sorry":"samahani", "help":"msaada",
-"name":"jina", "my":"yangu", "your":"yako", "work":"kazi", "go":"nenda", "come":"kuja",
-"sleep":"lala", "goodbye":"kwaheri", "morning":"asubuhi", "night":"usiku", "day":"siku"",
+"i love you":"nakupenda",
+"how are you":"habari yako", 
+"thank you":"asante",
+"good morning":"habari ya asubuhi",
+"i":"mimi", "you":"we", "love":"penda", "am":"ni", "is":"ni", "are":"uko",
+"hello":"jambo", "water":"maji", "food":"chakula", "school":"shule", "friend":"rafiki"
 };
 
-// Create reverse dictionary
 const dictSwToEn = {};
-for(let key in dictEnToSw){
-  if(dictEnToSw[key]) dictSwToEn[dictEnToSw[key]] = key;
-}
+for(let key in dictEnToSw){ if(dictEnToSw[key]) dictSwToEn[dictEnToSw[key]] = key; }
 
 function setDir(dir){
   direction = dir;
   document.getElementById('btnEn').classList.toggle('active', dir==='en');
   document.getElementById('btnSw').classList.toggle('active', dir==='sw');
-  document.getElementById('word').placeholder = dir==='en'? "Type English" : "Andika Kiswahili";
-  document.getElementById('result').innerText = "Result will appear here";
 }
 
 function doTranslate(){
   let text = document.getElementById('word').value.toLowerCase().trim();
   let dict = direction==='en'? dictEnToSw : dictSwToEn;
-
-  // Split into words and translate each
-  let words = text.split(" ");
-  let translated = [];
-
-  for(let w of words){
-    w = w.replace(/[.,!?]/g, ""); // remove punctuation
-    translated.push(dict[w] || "["+w+"]"); // if not found, show [word]
+  
+  if(dict[text]){
+    document.getElementById('result').innerText = dict[text];
+    return;
   }
-
-  document.getElementById('result').innerText = translated.join(" ");
+  
+  let words = text.split(" ");
+  let translated = words.map(w => dict[w] || w).join(" ");
+  document.getElementById('result').innerText = translated;
 }
 
-function copyText(){
-  let text = document.getElementById('result').innerText;
-  navigator.clipboard.writeText(text);
-  alert("Copied!");
-}
-
-function speakText(){
-  let text = document.getElementById('result').innerText;
-  let lang = direction==='en'? 'sw-TZ' : 'en-US';
-  let msg = new SpeechSynthesisUtterance(text);
-  msg.lang = lang;
-  speechSynthesis.speak(msg);
-}
+function copyText(){ navigator.clipboard.writeText(document.getElementById('result').innerText); alert("Copied!"); }
+function speakText(){ let msg = new SpeechSynthesisUtterance(document.getElementById('result').innerText); msg.lang = direction==='en'? 'sw-TZ' : 'en-US'; speechSynthesis.speak(msg); }
 </script>
 </body>
 </html>
