@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tafsiri App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <h1>🌍 Tafsiri App</h1>
+    <p>English ↔ Kiswahili Translator</p>
+    <button onclick="setLang('en-sw')" class="tab-btn active">English to Swahili</button>
+    <button onclick="setLang('sw-en')" class="tab-btn">Swahili to English</button>
+    <textarea id="inputText" placeholder="Type in English..."></textarea>
+    <button onclick="translate()">Translate / Tafsiri</button>
+    <div id="outputBox">
+      <h3>Translation:</h3>
+      <p id="outputText"></p>
+      <button onclick="copyText()">📋 Copy</button>
+      <button onclick="speakText()">🔊 Speak</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
